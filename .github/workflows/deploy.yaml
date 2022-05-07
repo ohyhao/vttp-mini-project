@@ -1,0 +1,19 @@
+name: Deploy to Heroku
+on: 
+  push:
+    tags:
+    - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout src 
+      uses: actions/checkout@v2
+    - name: Deploy to Heroku
+      uses: akhileshns/heroku-deploy@v3.12.12 
+      with:
+        heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+        heroku_app_name: vttpstocksapp
+        heroku_email: ${{ secrets.EMAIL }}
+        branch: ${{ github.ref_name }}
