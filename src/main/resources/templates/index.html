@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    
+    <h1>Welcome</h1>
+    <h2>Sign into your account below</h2>
+    <form action="/login" method="post">
+        <table>
+            <tr>
+                <td><h3>Username:</h3></td>
+                <td><input type="email" name="username" id="" required></td>
+            </tr>
+            <tr>
+                <td><h3>Password:</h3></td>
+                <td><input type="password" name="password" id="" required></td>
+            </tr>
+            <tr>
+                <td><button type="submit">Login</button></td>
+            </tr>
+        </table>      
+    </form>
+        
+    <h3 data-th-text="${error}"></h3>
+</body>
+</html>
