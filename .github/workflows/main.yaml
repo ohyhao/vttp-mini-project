@@ -1,5 +1,9 @@
 name: Complie, test, deploy
-on: [ "push" ]
+on:
+  push:
+    tags:
+    - 'v*'
+    - '!v*-alpha'
 jobs:
   step1:
     runs-on: ubuntu-latest
@@ -29,4 +33,12 @@ jobs:
         default_author: github_actions
         message: 'commit badge'
         add: '*.svg'
-    
+    - name: Checkout src 
+      uses: actions/checkout@v2
+    - name: Deploy
+      uses: akhileshns/heroku-deploy@v3.12.12 
+      with:
+        heroku_api_key: ${{ secrets.heroku_api_key }}
+        heroku_app_name: vttpstocksapp
+        heroku_email: ${{ secrets.email }}
+        branch: ${{ github.ref_name }}
