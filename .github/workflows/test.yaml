@@ -21,7 +21,6 @@ jobs:
     - name: Generate coverage badge
       uses: cicirello/jacoco-badge-generator@v2
       with:
-        jacoco-csv-file: target/site/jacoco/jacoco.csv
         generate-coverage-badge: true
     - name: Upload coverage badge to DigitalOcean spaces
       uses: BetaHuhn/do-spaces-action@v2
@@ -42,3 +41,4 @@ jobs:
         space_region: sgp1
         source: target/site/jacoco
         out_dir: coverage/${{ github.event.repository.name }}/report
+        permission: public-read
