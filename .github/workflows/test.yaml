@@ -33,3 +33,12 @@ jobs:
         source: .github/badges/jacoco.svg
         out_dir: badges/${{github.event.repository.name}}
         permission: public-read
+    - name: Upload coverage report
+      uses: BetaHuhn/do-spaces-action@v2
+      with:
+        access_key: ${{ secrets.DO_ACCESS_KEY }}
+        secret_key: ${{ secrets.DO_SECRET_KEY }}
+        space_name: yh-do-bucket
+        space_region: sgp1
+        source: target/site/jacoco
+        out_dir: coverage/${{ github.event.repository.name }}/report
