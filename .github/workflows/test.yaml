@@ -1,6 +1,8 @@
 name: Test
 on:
   push:
+env:
+  STOCK_API_KEY: ${{ secrets.STOCK_API_KEY }}
 jobs:
   build:
     runs-on: ubuntu-latest
