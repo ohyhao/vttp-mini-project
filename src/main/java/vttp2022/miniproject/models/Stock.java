@@ -6,8 +6,9 @@ public class Stock {
     private String symbol;
     private String company_name;
     private int shares;
-    private Float share_price;
+    private Double share_price;
     private Date date_traded;
+
     
     public String getSymbol() {
         return symbol;
@@ -27,10 +28,10 @@ public class Stock {
     public void setShares(int shares) {
         this.shares = shares;
     }
-    public Float getShare_price() {
+    public Double getShare_price() {
         return share_price;
     }
-    public void setShare_price(Float share_price) {
+    public void setShare_price(Double share_price) {
         this.share_price = share_price;
     }
     public Date getDate_traded() {
@@ -39,7 +40,5 @@ public class Stock {
     public void setDate_traded(Date date_traded) {
         this.date_traded = date_traded;
     }
-
-    
-    
+   
 }

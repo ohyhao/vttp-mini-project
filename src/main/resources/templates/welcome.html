@@ -10,12 +10,16 @@
     <h1>Welcome to your portfolio, <span data-th-text="${name}"></span></h1>
 
     <h2>Total Assets: $<span data-th-text="${assets}"></span></h2>
+    <h3>Day Gain: <span data-th-text="${day_gain}"></span></h3>
+    <h3>Total Gain: <span data-th-text="${total_gain}"></span></h3>
+
 
     <h3 data-th-if="${#lists.isEmpty(stocks)}" class="mt-3vh">
         You have no stocks added!
     </h3>
 
-    <table data-th-unless="${#lists.isEmpty(stocks)}" border="1" class="mt-3vh">
+    <div>
+    <table style="float: left;" data-th-unless="${#lists.isEmpty(stocks)}" border="1" class="mt-3vh">
         <thead>
             <tr>
                 <th>Symbol</th>
@@ -33,8 +37,33 @@
                 <td><span data-th-text="${stock.share_price}"></span></td>
                 <td><span data-th-text="${stock.date_traded}"></span></td>
             </tr>
+            
         </tbody>
 
     </table>
+    <table style="float: left;" data-th-unless="${#lists.isEmpty(quotes)}" border="1" class="mt-3vh">
+        <thead>
+            <tr>
+                <th>Last Price</th>
+                <th>Previous Close Price</th>
+                <th>Change</th>
+                <th>Change %</th>
+                <th>Total Change</th>
+                <th>Total Change %</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-th-each="quote: ${quotes}">
+                <td><span data-th-text="${quote.current_price}"></span></td>
+                <td><span data-th-text="${quote.previous_close_price}"></span></td>
+                <td><span data-th-text="${quote.change}"></span></td>
+                <td><span data-th-text="${quote.percent_change}">%</span></td>
+                <td><span data-th-text="${quote.total_change}"></span></td>
+                <td><span data-th-text="${quote.total_change_percentage}">%</span></td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
 </body>
 </html>
