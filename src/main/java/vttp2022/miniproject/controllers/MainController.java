@@ -21,7 +21,7 @@ import vttp2022.miniproject.services.QuoteService;
 import vttp2022.miniproject.services.UserService;
 
 @Controller
-@RequestMapping(path = "/login")
+@RequestMapping(path = "/home")
 public class MainController {
 
     @Autowired
@@ -68,7 +68,7 @@ public class MainController {
             Optional<Quote> optQuote = quoteSvc.getQuote(stocks.get(i).getSymbol());
             if (optQuote.isEmpty()) {
                 mvc.addObject("not found", "stock not found");
-                mvc.setViewName("welcome");
+                mvc.setViewName("home");
                 return mvc;
             }
             quote = optQuote.get();
@@ -98,7 +98,7 @@ public class MainController {
         mvc.addObject("day_gain", df.format(day_gain));
         mvc.addObject("total_gain", df.format(total_gain));
         mvc.addObject("stocks", stocks);
-        mvc.setViewName("welcome");
+        mvc.setViewName("home");
         return mvc;
     }
     
