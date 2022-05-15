@@ -7,6 +7,34 @@
     <title>Edit Porfolio</title>
 </head>
 <body>
-    <h1>Hello</h1>
+    <h1>Edit Portfolio</h1>
+
+    <form method="post" action="/home/edit">
+        <table>
+            <tr>
+                <td><h3>Symbol:</h3></td>
+                <td><input type="text" name="symbol" id="" required></td>
+            </tr>
+            <tr>
+                <td><h3>Shares:</h3></td>
+                <td><input type="number" name="shares" id="" required></td>
+            </tr>
+            <tr>
+                <td><h3>Share Price:</h3></td>
+                <td><input type="text" name="share_price" id="" required></td>                
+            </tr>
+                <td><h3>Date Traded:</h3></td>
+                <td><input type="date" name="date_traded" id="" required></td>
+            <tr>
+                <td><button type="submit" name="add" value="add">Add</button></td>
+                <td><button type="submit" name="delete" value="delete">Delete</button></td>
+            </tr>
+        </table>  
+    </form>
+
+    <h2><span data-th-text="${message}"></span></h2>
+    <br><br><br><br><br>
+    <a href="http://localhost:8080/home" class="button">Back to Porfolio</a>
+    
 </body>
 </html>

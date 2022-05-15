@@ -16,12 +16,14 @@ create table user (
 );
 
 create table assets (
-	symbol varchar(8) not null,
+	asset_id int not null auto_increment,
+    symbol varchar(8) not null,
     company_name varchar(128),
     shares int not null,
-    share_price float not null,
+    share_price double not null,
     date_traded date,
     user_id int not null,
+    primary key(asset_id),
     constraint fk_user_id
 		foreign key (user_id)
         references user(user_id)

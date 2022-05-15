@@ -26,12 +26,8 @@ public class QuoteService {
             .queryParam("token", stockKey)
             .toUriString();
 
-        System.out.println(">>>>> url: " + url);
-
         RequestEntity<Void> req = RequestEntity.get(url).build();
-
         RestTemplate template = new RestTemplate();
-
         ResponseEntity<String> resp = null;
 
         try {

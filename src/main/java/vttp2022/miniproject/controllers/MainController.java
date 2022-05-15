@@ -5,9 +5,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +37,8 @@ public class MainController {
     private QuoteService quoteSvc;
 
     @PostMapping
-    public ModelAndView postLogin(@RequestBody MultiValueMap<String, String> payload) {
+    @GetMapping
+    public ModelAndView postLogin(@RequestBody MultiValueMap<String, String> payload, HttpSession sess) {
 
         ModelAndView mvc = new ModelAndView();
 
@@ -51,7 +55,8 @@ public class MainController {
         }
         
         user = opt.get();
-        System.out.printf(">>>>> user = " + user.toString());
+        sess.setAttribute("user", user);
+        System.out.printf(">>>>> user = %s\n".formatted(user.toString()));
 
         List<Stock> stocks = assetsSvc.getAssets(user.getUser_id());
 
@@ -72,8 +77,7 @@ public class MainController {
                 return mvc;
             }
             quote = optQuote.get();
-            quotes.add(quote);
-            
+            quotes.add(quote);  
         }
 
         for (int i = 0; i < stocks.size(); i++) {
@@ -83,14 +87,14 @@ public class MainController {
             quotes.get(i).setTotal_change(stocks.get(i).getShares() * (quotes.get(i).getCurrent_price()- stocks.get(i).getShare_price()));
             quotes.get(i).setTotal_change_percentage((quotes.get(i).getCurrent_price()- stocks.get(i).getShare_price())
                 /stocks.get(i).getShare_price() * 100);
+            
         }
-
+        
         total_gain = assets - cost;
         
-        System.out.printf(">>>>> assets = \n" + assets);
-        System.out.printf(">>>>> day_gain = \n" + day_gain);
-        System.out.printf(">>>>> total_gain = \n" + total_gain);
-
+        System.out.printf(">>>>> assets = %s\n".formatted(assets));
+        System.out.printf(">>>>> day_gain = %s\n".formatted(day_gain));
+        System.out.printf(">>>>> total_gain = %s\n".formatted(total_gain));
 
         mvc.addObject("quotes", quotes);
         mvc.addObject("name", user.getName());
