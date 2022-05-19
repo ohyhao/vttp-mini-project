@@ -9,7 +9,7 @@
 <body>
     <h1>Edit Portfolio</h1>
 
-    <form method="post" action="/home/edit">
+    <form action="/home/edit" method="post">
         <table>
             <tr>
                 <td><h3>Symbol:</h3></td>
@@ -32,9 +32,12 @@
         </table>  
     </form>
 
+    <h2><span data-th-text="${error}"></span></h2>
     <h2><span data-th-text="${message}"></span></h2>
     <br><br><br><br><br>
-    <a href="http://localhost:8080/home" class="button">Back to Porfolio</a>
+    <form action="/home" method="post">
+        <button type="submit" name="return" value="return">Return to Portfolio</button>
+    </form>
     
 </body>
 </html>

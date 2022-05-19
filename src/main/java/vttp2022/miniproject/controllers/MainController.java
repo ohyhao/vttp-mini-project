@@ -1,19 +1,26 @@
 package vttp2022.miniproject.controllers;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import vttp2022.miniproject.models.Quote;
@@ -24,7 +31,7 @@ import vttp2022.miniproject.services.QuoteService;
 import vttp2022.miniproject.services.UserService;
 
 @Controller
-@RequestMapping(path = "/home")
+@RequestMapping
 public class MainController {
 
     @Autowired
@@ -36,27 +43,47 @@ public class MainController {
     @Autowired
     private QuoteService quoteSvc;
 
-    @PostMapping
-    @GetMapping
-    public ModelAndView postLogin(@RequestBody MultiValueMap<String, String> payload, HttpSession sess) {
+    @PostMapping("/home")
+    public ModelAndView homePage(@RequestBody MultiValueMap<String, String> payload, HttpSession sess) {
 
         ModelAndView mvc = new ModelAndView();
 
-        String username = payload.getFirst("username");
+        String email = payload.getFirst("email");
         String password = payload.getFirst("password");
 
-        User user = new User();
-        Optional<User> opt = userSvc.findUserByEmailAndPassword(username, password);
+        Optional<User> opt = userSvc.findUserByEmailAndPassword(email, password);
         
         if (opt.isEmpty()) {
             mvc.addObject("error", "Incorrect email/password!");
+            mvc.setStatus(HttpStatus.FORBIDDEN);
             mvc.setViewName("index");
             return mvc;
         }
-        
-        user = opt.get();
+
+        // sess.setAttribute("username", username);
+        // mvc.setViewName("redirect:/protected/home");
+            
+        User user = opt.get();
         sess.setAttribute("user", user);
-        System.out.printf(">>>>> user = %s\n".formatted(user.toString()));
+        sess.setMaxInactiveInterval(60*60);
+        
+        // User user = (User)sess.getAttribute("user");
+        
+        // user = (User)request.getSession().getAttribute("USER_SESSION");
+        // if (user == null) {
+        //     request.getSession().setAttribute("user", user);
+        // }
+        // request.getSession().setAttribute("user", user);
+        
+        // List<User> users = (List<User>)request.getSession().getAttribute("USER_SESSION");
+        // if (users == null) {
+        //     users = new ArrayList<>();
+        //     request.getSession().setAttribute("USER_SESSION", users);
+        // }
+        // users.add(user);
+        // request.getSession().setAttribute("USER_SESSION", users);
+        
+        // System.out.printf(">>>>> user = %s\n".formatted(user.toString()));
 
         List<Stock> stocks = assetsSvc.getAssets(user.getUser_id());
 
@@ -105,5 +132,41 @@ public class MainController {
         mvc.setViewName("home");
         return mvc;
     }
+
+    // @RequestMapping(value = "/create", method = RequestMethod.POST) 
+    // public ModelAndView createUserPage() {
+        
+    //     ModelAndView mvc = new ModelAndView();
+    //     mvc.setViewName("create");
+    //     return mvc;
+    // }
+
+
+    // @RequestMapping(value = "/", method = RequestMethod.POST, params = "create")
+    // public String createUser(@RequestBody MultiValueMap<String, String> form, HttpSession sess, Model model) {
+
+    //     User user = create(form);   
+    //     System.out.printf(">>>> user: " + user.toString());
+
+    //     try {
+    //         userSvc.addNewUser(user);
+    //     } catch (Exception ex) {
+    //         model.addAttribute("error", ex.getMessage());
+    //         return "create";
+    //     }
+        
+    //     String message = "Account created! Please login in!";
+    //     model.addAttribute("created", message);
+
+    //     return "index";
+    // }
+
+    // private User create(MultiValueMap<String, String> form) {
+    //     User user = new User();
+    //     user.setName(form.getFirst("name"));
+    //     user.setEmail(form.getFirst("username"));
+    //     user.setPassword(form.getFirst("password"));   
+    //     return user;
+    // }
     
 }

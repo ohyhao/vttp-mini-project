@@ -1,12 +1,15 @@
 package vttp2022.miniproject.controllers;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,15 +18,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import vttp2022.miniproject.models.Quote;
 import vttp2022.miniproject.models.Stock;
 import vttp2022.miniproject.models.User;
 import vttp2022.miniproject.services.AssetsService;
+import vttp2022.miniproject.services.QuoteService;
+import vttp2022.miniproject.services.UserService;
 
 @Controller
 public class PortfolioController {
 
     @Autowired
     private AssetsService assetsSvc;
+
+    @Autowired
+    private QuoteService quoteSvc;
+
 
     @RequestMapping(path = "/home/edit")
     @PostMapping
@@ -36,25 +46,83 @@ public class PortfolioController {
         return mvc;
     }
 
+    @RequestMapping(value = "/home", method = RequestMethod.POST, params = "return")
+    public ModelAndView returnToHomepage(HttpSession sess) {
+
+        ModelAndView mvc = new ModelAndView();
+
+        User user = (User)sess.getAttribute("user");
+        List<Stock> stocks = assetsSvc.getAssets(user.getUser_id());
+
+        DecimalFormat df = new DecimalFormat("#.00");
+        Double assets = 0.0;
+        Double day_gain = 0.0;
+        Double total_gain = 0.0;
+        Double cost = 0.0;
+        Quote quote = new Quote();
+        List<Quote> quotes = new LinkedList<>();
+        
+        for (int i = 0; i < stocks.size(); i++) {
+            
+            Optional<Quote> optQuote = quoteSvc.getQuote(stocks.get(i).getSymbol());
+            if (optQuote.isEmpty()) {
+                mvc.addObject("not found", "stock not found");
+                mvc.setViewName("home");
+                return mvc;
+            }
+            quote = optQuote.get();
+            quotes.add(quote);  
+        }
+
+        for (int i = 0; i < stocks.size(); i++) {
+            assets += stocks.get(i).getShares() * (quotes.get(i).getCurrent_price());
+            day_gain +=  stocks.get(i).getShares() * (quotes.get(i).getChange());
+            cost += (stocks.get(i).getShares() * stocks.get(i).getShare_price());
+            quotes.get(i).setTotal_change(stocks.get(i).getShares() * (quotes.get(i).getCurrent_price()- stocks.get(i).getShare_price()));
+            quotes.get(i).setTotal_change_percentage((quotes.get(i).getCurrent_price()- stocks.get(i).getShare_price())
+                /stocks.get(i).getShare_price() * 100);
+            
+        }
+        
+        total_gain = assets - cost;
+        
+        System.out.printf(">>>>> assets = %s\n".formatted(assets));
+        System.out.printf(">>>>> day_gain = %s\n".formatted(day_gain));
+        System.out.printf(">>>>> total_gain = %s\n".formatted(total_gain));
+
+        mvc.addObject("quotes", quotes);
+        mvc.addObject("name", user.getName());
+        mvc.addObject("assets", df.format(assets));
+        mvc.addObject("day_gain", df.format(day_gain));
+        mvc.addObject("total_gain", df.format(total_gain));
+        mvc.addObject("stocks", stocks);
+        mvc.setViewName("home");
+        return mvc;
+    }
+
     @RequestMapping(value = "/home/edit", method = RequestMethod.POST, params = "add")
     public ModelAndView addStock(@RequestBody MultiValueMap<String, String> payload, HttpSession sess) {
 
         ModelAndView mvc = new ModelAndView();
 
-        // Optional<Stock> optStock = create(payload);
-        // if (optStock.isEmpty()) {
-        //     mvc.setStatus(HttpStatus.BAD_REQUEST);
-        //     mvc.addObject("error", "Please key in !");
-        //     mvc.setViewName("edit");
-        //     return mvc;
-        // }
-
-        // Stock stock = optStock.get();
-
         Stock stock = create(payload);
 
+        System.out.printf("symbol = " + stock.getSymbol());
+        System.out.printf("shares = " + stock.getShares());
+        System.out.printf("share_price = " + stock.getShare_price());
+        System.out.printf("date_payload = " + payload.getFirst("date_traded"));
+        System.out.printf("date = " + stock.getDate_traded());
+
         User user = (User)sess.getAttribute("user");
-        assetsSvc.addNewStock(stock, user.getUser_id());
+
+        try {
+            assetsSvc.addNewStock(stock, user.getUser_id());
+        } catch (Exception ex) {
+            mvc.addObject("error", ex.getMessage());
+            mvc.setViewName("edit");
+            return mvc;
+        }
+        
         mvc.setViewName("edit");
         
         String message = "%s shares of %s @ %s has been added to your porfolio".
@@ -69,23 +137,25 @@ public class PortfolioController {
 
         ModelAndView mvc = new ModelAndView();
 
-        // Optional<Stock> optStock = create(payload);
-        // if (optStock.isEmpty()) {
-        //     mvc.addObject("delete_error", "Symbol not in portfolio!");
-        //     mvc.setViewName("edit");
-        //     return mvc;
-        // }
-
         Stock stock = create(payload);
 
         User user = (User)sess.getAttribute("user");
-        assetsSvc.deleteStock(stock, user.getUser_id());
+
+        try {
+            assetsSvc.deleteStock(stock, user.getUser_id());
+        } catch (Exception ex) {
+            mvc.addObject("error", ex.getMessage());
+            mvc.setViewName("edit");
+            return mvc;
+        }
+
         mvc.setViewName("edit");
 
         String message = "%s shares of %s @ %s has been deleted from your porfolio".
             formatted(stock.getShares(), stock.getSymbol(), stock.getShare_price());
 
         mvc.addObject("message", message);
+
         return mvc;
     }
     

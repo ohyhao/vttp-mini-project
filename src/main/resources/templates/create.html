@@ -4,16 +4,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Create User</title>
 </head>
 <body>
-    
-    <h1>Welcome</h1>
-    <h2>Sign into your account below</h2>
-    <form action="/home" method="post">
+    <h1>Please enter your details</h1>
+    <form action="/" method="post">
         <table>
             <tr>
-                <td><h3>Email:</h3></td>
+                <td><h3>Name:</h3></td>
+                <td><input type="text" name="name" id="" required></td>
+            </tr>
+            <tr>
+                <td><h3>Username:</h3></td>
                 <td><input type="email" name="email" id="" required></td>
             </tr>
             <tr>
@@ -21,17 +23,12 @@
                 <td><input type="password" name="password" id="" required></td>
             </tr>
             <tr>
-                <td><input type="submit" value="Login"></td>
+                <td><button type="submit">Create</button></td>
             </tr>
         </table>      
     </form>
-        
-    <h3 data-th-text="${error}"></h3>
-    <h3 data-th-text="${created}"></h3>
 
-    <form action="/create" method="post">
-        <button type="submit">Create Account</button>
-    </form>
+    <h3><span data-th-text="${error}"></span></h3>
     
 </body>
 </html>

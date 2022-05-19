@@ -4,7 +4,6 @@ import java.util.Date;
 
 public class Stock {
     private String symbol;
-    private String company_name;
     private int shares;
     private Double share_price;
     private Date date_traded;
@@ -15,12 +14,6 @@ public class Stock {
     }
     public void setSymbol(String symbol) {
         this.symbol = symbol;
-    }
-    public String getCompany_name() {
-        return company_name;
-    }
-    public void setCompany_name(String company_name) {
-        this.company_name = company_name;
     }
     public int getShares() {
         return shares;

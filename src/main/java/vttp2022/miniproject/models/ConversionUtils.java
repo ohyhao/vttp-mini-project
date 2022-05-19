@@ -16,7 +16,6 @@ public class ConversionUtils {
     public static Stock populate(SqlRowSet rs) {
         Stock stock = new Stock();
         stock.setSymbol(rs.getString("symbol"));
-        stock.setCompany_name(rs.getString("company_name"));
         stock.setShares(rs.getInt("shares"));
         stock.setShare_price(rs.getDouble("share_price"));
         stock.setDate_traded(rs.getDate("date_traded"));

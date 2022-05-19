@@ -16,4 +16,7 @@ public interface Queries {
 
     public static final String SQL_DELETE_STOCK_BY_USER_ID =
         "delete from assets where symbol = ? and shares = ? and share_price = ? and date_traded = ? and user_id = ?";
+
+    public static final String SQL_INSERT_NEW_USER =
+        "insert into user (email, password, name) values (?, sha1(?), ?)";
 }

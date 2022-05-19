@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome Page</title>
+    <title>Home</title>
 </head>
 <body>
     <h1>Welcome to your portfolio, <span data-th-text="${name}"></span></h1>
@@ -23,7 +23,6 @@
         <thead>
             <tr>
                 <th>Symbol</th>
-                <th>Company Name</th>
                 <th>Shares</th>
                 <th>Share Price</th>
                 <th>Date Traded</th>
@@ -32,7 +31,6 @@
         <tbody>
             <tr data-th-each="stock: ${stocks}">
                 <td><span data-th-text="${stock.symbol}"></span></td>
-                <td><span data-th-text="${stock.company_name}"></span></td>
                 <td><span data-th-text="${stock.shares}"></span></td>
                 <td><span data-th-text="${stock.share_price}"></span></td>
                 <td><span data-th-text="${stock.date_traded}"></span></td>
@@ -66,9 +64,12 @@
     </table>
     </div>
     <br><br><br><br><br>
-    <form method="POST" action="/home/edit">
+    <form action="/home/edit" method="post">
         <button type="submit">Edit porfolio</button>
     </form>
-
+    <br><br><br><br><br>
+    <form action="/logout" method="get">
+        <button type="submit">Logout</button>
+    </form>
 </body>
 </html>
