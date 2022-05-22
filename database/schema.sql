@@ -18,7 +18,6 @@ create table user (
 create table assets (
 	asset_id int not null auto_increment,
     symbol varchar(8) not null,
-    company_name varchar(128),
     shares int not null,
     share_price double not null,
     date_traded date,
