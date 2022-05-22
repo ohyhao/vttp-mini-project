@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
     <title>Home</title>
 </head>
 <body>
     <h1>Welcome to your portfolio, <span data-th-text="${name}"></span></h1>
 
-    <h2>Total Assets: $<span data-th-text="${assets}"></span></h2>
-    <h3>Day Gain: <span data-th-text="${day_gain}"></span></h3>
-    <h3>Total Gain: <span data-th-text="${total_gain}"></span></h3>
+    <h2>Total Assets: $<span data-th-text="${#numbers.formatDecimal(assets, 1, 2)}"></span></h2>
+    <h3>Day Gain: <span data-th-text="${#numbers.formatDecimal(day_gain, 1, 2)}"></span></h3>
+    <h3>Total Gain: <span data-th-text="${#numbers.formatDecimal(total_gain, 1, 2)}"></span></h3>
 
 
     <h3 data-th-if="${#lists.isEmpty(stocks)}" class="mt-3vh">
@@ -19,7 +21,7 @@
     </h3>
 
     <div>
-    <table style="float: left;" data-th-unless="${#lists.isEmpty(stocks)}" border="1" class="mt-3vh">
+    <table style="float: left;" data-th-unless="${#lists.isEmpty(stocks)}" class="mt-3vh">
         <thead>
             <tr>
                 <th>Symbol</th>
@@ -35,11 +37,9 @@
                 <td><span data-th-text="${stock.share_price}"></span></td>
                 <td><span data-th-text="${stock.date_traded}"></span></td>
             </tr>
-            
         </tbody>
-
     </table>
-    <table style="float: left;" data-th-unless="${#lists.isEmpty(quotes)}" border="1" class="mt-3vh">
+    <table style="float: left;" data-th-unless="${#lists.isEmpty(quotes)}" class="mt-3vh">
         <thead>
             <tr>
                 <th>Last Price</th>
@@ -56,9 +56,9 @@
                 <td><span data-th-text="${quote.current_price}"></span></td>
                 <td><span data-th-text="${quote.previous_close_price}"></span></td>
                 <td><span data-th-text="${quote.change}"></span></td>
-                <td><span data-th-text="${quote.percent_change}">%</span></td>
-                <td><span data-th-text="${quote.total_change}"></span></td>
-                <td><span data-th-text="${quote.total_change_percentage}">%</span></td>
+                <td><span data-th-text="${#numbers.formatDecimal(quote.percent_change, 1, 2)}">%</span></td>
+                <td><span data-th-text="${#numbers.formatDecimal(quote.total_change, 1, 2)}"></span></td>
+                <td><span data-th-text="${#numbers.formatDecimal(quote.total_change_percentage, 1, 2)}">%</span></td>
             </tr>
         </tbody>
     </table>

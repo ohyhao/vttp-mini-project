@@ -1,6 +1,5 @@
 package vttp2022.miniproject;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -9,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,13 +15,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import vttp2022.miniproject.models.Quote;
 import vttp2022.miniproject.models.Stock;
 import vttp2022.miniproject.models.User;
-import vttp2022.miniproject.repositories.AssetsRepository;
 import vttp2022.miniproject.services.AssetsService;
 import vttp2022.miniproject.services.QuoteService;
 import vttp2022.miniproject.services.UserService;
 
 @SpringBootTest
-class MiniProjectApplicationTests {
+class MiniProjectApplicationServiceTests {
 
 	@Autowired
 	private UserService userSvc;
@@ -106,6 +103,12 @@ class MiniProjectApplicationTests {
 		}
 		assertThrows(IllegalArgumentException.class,
 			() -> assetsSvc.deleteStock(stock, 1));
+	}
+
+	@Test
+	void shouldNotBeAbleToAddUser() {
+		assertThrows(IllegalArgumentException.class,
+			() -> userSvc.addNewUser("garyoh@gmail.com", "garyoh", "Gary Oh"));
 	}
 
 }

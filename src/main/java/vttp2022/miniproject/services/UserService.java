@@ -35,14 +35,16 @@ public class UserService {
 
     public void addNewUser(String email, String password, String name) {
         
+        Optional<User> opt = userRepo.findUserByEmail(email);
         try {
-            boolean count = userRepo.insertUser(email, password, name);
-            if (count = false)
-            throw new IllegalArgumentException("Unable to create user, please try again");
+            if (opt.isPresent()) 
+                throw new IllegalArgumentException("%s is already used, please login or use other email".formatted(email));
+                
+            if (!userRepo.insertUser(email, password, name))
+                throw new IllegalArgumentException("Unable to create user! Please try again!");
         } catch (Exception ex) {
-            ex.printStackTrace();
+            ex.getStackTrace();
             throw ex;
-        }
-        
+        } 
     }
 }

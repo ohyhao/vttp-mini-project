@@ -2,6 +2,9 @@ package vttp2022.miniproject.repositories;
 
 public interface Queries {
 
+    public static final String SQL_FIND_USER_BY_EMAIL = 
+        "select * from user where email = ?";
+
     public static final String SQL_SELECT_USER_BY_EMAIL_AND_PASSWORD =
         "select * from user where email = ? and password = sha1(?)";
 

@@ -1,6 +1,5 @@
 package vttp2022.miniproject.controllers;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,7 +22,6 @@ import vttp2022.miniproject.models.Stock;
 import vttp2022.miniproject.models.User;
 import vttp2022.miniproject.services.AssetsService;
 import vttp2022.miniproject.services.QuoteService;
-import vttp2022.miniproject.services.UserService;
 
 @Controller
 public class PortfolioController {
@@ -40,9 +38,7 @@ public class PortfolioController {
     public ModelAndView editStock() {
 
         ModelAndView mvc = new ModelAndView();
-        
         mvc.setViewName("edit");
-        
         return mvc;
     }
 
@@ -54,7 +50,6 @@ public class PortfolioController {
         User user = (User)sess.getAttribute("user");
         List<Stock> stocks = assetsSvc.getAssets(user.getUser_id());
 
-        DecimalFormat df = new DecimalFormat("#.00");
         Double assets = 0.0;
         Double day_gain = 0.0;
         Double total_gain = 0.0;
@@ -82,6 +77,7 @@ public class PortfolioController {
             quotes.get(i).setTotal_change_percentage((quotes.get(i).getCurrent_price()- stocks.get(i).getShare_price())
                 /stocks.get(i).getShare_price() * 100);
             
+            
         }
         
         total_gain = assets - cost;
@@ -92,9 +88,9 @@ public class PortfolioController {
 
         mvc.addObject("quotes", quotes);
         mvc.addObject("name", user.getName());
-        mvc.addObject("assets", df.format(assets));
-        mvc.addObject("day_gain", df.format(day_gain));
-        mvc.addObject("total_gain", df.format(total_gain));
+        mvc.addObject("assets", assets);
+        mvc.addObject("day_gain", day_gain);
+        mvc.addObject("total_gain", total_gain);
         mvc.addObject("stocks", stocks);
         mvc.setViewName("home");
         return mvc;
@@ -125,8 +121,8 @@ public class PortfolioController {
         
         mvc.setViewName("edit");
         
-        String message = "%s shares of %s @ %s has been added to your porfolio".
-            formatted(stock.getShares(), stock.getSymbol(), stock.getShare_price());
+        String message = "%s shares of %s @ $%s has been added to your porfolio".
+            formatted(stock.getShares(), stock.getSymbol(), stock.getShare_price(), payload.getFirst("date"));
         
         mvc.addObject("message", message);
         return mvc;
@@ -151,31 +147,13 @@ public class PortfolioController {
 
         mvc.setViewName("edit");
 
-        String message = "%s shares of %s @ %s has been deleted from your porfolio".
+        String message = "%s shares of %s @ $%s has been deleted from your porfolio".
             formatted(stock.getShares(), stock.getSymbol(), stock.getShare_price());
 
         mvc.addObject("message", message);
 
         return mvc;
     }
-    
-    // private Optional<Stock> create(MultiValueMap<String, String> payload) {
-    //     Stock stock = new Stock();
-
-    //     stock.setSymbol(payload.getFirst("symbol"));
-    //     String shares = payload.getFirst("shares");
-    //     stock.setShares(Integer.parseInt(shares));
-    //     String share_price = payload.getFirst("share_price");
-    //     stock.setShare_price(Double.parseDouble(share_price));
-    //     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    //     try {
-    //         stock.setDate_traded(sdf.parse(payload.getFirst("date_traded")));
-    //     } catch (Exception ex) {
-    //         ex.printStackTrace();
-    //         return Optional.empty();
-    //     }
-    //     return Optional.of(stock);
-    // }
 
     private Stock create(MultiValueMap<String, String> payload) {
         Stock stock = new Stock();
