@@ -15,7 +15,7 @@ public interface Queries {
         "select * from assets where symbol = ? and user_id = ?";
 
     public static final String SQL_INSERT_STOCK_BY_USER_ID =
-        "insert into assets (symbol, shares, share_price, date_traded, user_id) values (?, ?, ?, ?, ?)";
+        "insert into assets (symbol, shares, share_price, date_traded, user_id) values (UPPER(?), ?, ?, ?, ?)";
 
     public static final String SQL_DELETE_STOCK_BY_USER_ID =
         "delete from assets where symbol = ? and shares = ? and share_price = ? and date_traded = ? and user_id = ?";

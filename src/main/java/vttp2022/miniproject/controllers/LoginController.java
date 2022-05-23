@@ -5,6 +5,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,15 +64,11 @@ public class LoginController {
 
         Optional<User> opt = userSvc.findUserByEmailAndPassword(email, password);
 
-        if (opt.isPresent()) {
+        if (opt.isPresent())
             mvc.addObject("created", "Account created! Please login");
+            mvc.setStatus(HttpStatus.CREATED);
             mvc.setViewName("index");
-        } else {
-            mvc.addObject("error", "Unable to create account, please try again!");
-            mvc.setViewName("create");
-        }
-
-        return mvc;
+            return mvc;
     }
 }
 

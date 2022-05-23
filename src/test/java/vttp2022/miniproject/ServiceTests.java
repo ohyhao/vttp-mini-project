@@ -20,7 +20,7 @@ import vttp2022.miniproject.services.QuoteService;
 import vttp2022.miniproject.services.UserService;
 
 @SpringBootTest
-class MiniProjectApplicationServiceTests {
+class ServiceTests {
 
 	@Autowired
 	private UserService userSvc;

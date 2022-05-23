@@ -52,7 +52,7 @@ public class MainController {
             mvc.setViewName("index");
             return mvc;
         }
-        
+
         User user = opt.get();
         sess.setAttribute("user", user);
         sess.setMaxInactiveInterval(60*60);
@@ -89,10 +89,6 @@ public class MainController {
         
         total_gain = assets - cost;
         
-        System.out.printf(">>>>> assets = %s\n".formatted(assets));
-        System.out.printf(">>>>> day_gain = %s\n".formatted(day_gain));
-        System.out.printf(">>>>> total_gain = %s\n".formatted(total_gain));
-
         mvc.addObject("quotes", quotes);
         mvc.addObject("name", user.getName());
         mvc.addObject("assets", assets);

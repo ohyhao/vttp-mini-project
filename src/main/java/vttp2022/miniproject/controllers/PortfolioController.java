@@ -8,7 +8,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -81,10 +81,6 @@ public class PortfolioController {
         }
         
         total_gain = assets - cost;
-        
-        System.out.printf(">>>>> assets = %s\n".formatted(assets));
-        System.out.printf(">>>>> day_gain = %s\n".formatted(day_gain));
-        System.out.printf(">>>>> total_gain = %s\n".formatted(total_gain));
 
         mvc.addObject("quotes", quotes);
         mvc.addObject("name", user.getName());
@@ -103,26 +99,20 @@ public class PortfolioController {
 
         Stock stock = create(payload);
 
-        System.out.printf("symbol = " + stock.getSymbol());
-        System.out.printf("shares = " + stock.getShares());
-        System.out.printf("share_price = " + stock.getShare_price());
-        System.out.printf("date_payload = " + payload.getFirst("date_traded"));
-        System.out.printf("date = " + stock.getDate_traded());
-
         User user = (User)sess.getAttribute("user");
 
         try {
             assetsSvc.addNewStock(stock, user.getUser_id());
         } catch (Exception ex) {
             mvc.addObject("error", ex.getMessage());
+            mvc.setStatus(HttpStatus.BAD_REQUEST);
             mvc.setViewName("edit");
             return mvc;
         }
-        
         mvc.setViewName("edit");
         
         String message = "%s shares of %s @ $%s has been added to your porfolio".
-            formatted(stock.getShares(), stock.getSymbol(), stock.getShare_price(), payload.getFirst("date"));
+            formatted(stock.getShares(), stock.getSymbol().toUpperCase(), stock.getShare_price());
         
         mvc.addObject("message", message);
         return mvc;
@@ -141,14 +131,14 @@ public class PortfolioController {
             assetsSvc.deleteStock(stock, user.getUser_id());
         } catch (Exception ex) {
             mvc.addObject("error", ex.getMessage());
+            mvc.setStatus(HttpStatus.BAD_REQUEST);
             mvc.setViewName("edit");
             return mvc;
         }
-
         mvc.setViewName("edit");
 
         String message = "%s shares of %s @ $%s has been deleted from your porfolio".
-            formatted(stock.getShares(), stock.getSymbol(), stock.getShare_price());
+            formatted(stock.getShares(), stock.getSymbol().toUpperCase(), stock.getShare_price());
 
         mvc.addObject("message", message);
 
@@ -158,7 +148,7 @@ public class PortfolioController {
     private Stock create(MultiValueMap<String, String> payload) {
         Stock stock = new Stock();
 
-        stock.setSymbol(payload.getFirst("symbol"));
+        stock.setSymbol(payload.getFirst("symbol").toUpperCase());
         String shares = payload.getFirst("shares");
         stock.setShares(Integer.parseInt(shares));
         String share_price = payload.getFirst("share_price");
