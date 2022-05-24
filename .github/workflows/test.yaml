@@ -3,6 +3,7 @@ on:
   push:
 env:
   STOCK_API_KEY: ${{ secrets.STOCK_API_KEY }}
+  SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
 jobs:
   build:
     runs-on: ubuntu-latest

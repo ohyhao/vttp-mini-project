@@ -65,7 +65,7 @@ public class LoginController {
         Optional<User> opt = userSvc.findUserByEmailAndPassword(email, password);
 
         if (opt.isPresent())
-            mvc.addObject("created", "Account created! Please login");
+            mvc.addObject("created", "Account created, please log in");
             mvc.setStatus(HttpStatus.CREATED);
             mvc.setViewName("index");
             return mvc;

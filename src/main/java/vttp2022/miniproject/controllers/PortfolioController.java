@@ -48,6 +48,7 @@ public class PortfolioController {
         ModelAndView mvc = new ModelAndView();
 
         User user = (User)sess.getAttribute("user");
+        sess.setMaxInactiveInterval(60*60);
         List<Stock> stocks = assetsSvc.getAssets(user.getUser_id());
 
         Double assets = 0.0;
@@ -100,6 +101,7 @@ public class PortfolioController {
         Stock stock = create(payload);
 
         User user = (User)sess.getAttribute("user");
+        sess.setMaxInactiveInterval(60*60);
 
         try {
             assetsSvc.addNewStock(stock, user.getUser_id());
@@ -112,7 +114,7 @@ public class PortfolioController {
         mvc.setViewName("edit");
         
         String message = "%s shares of %s @ $%s has been added to your porfolio".
-            formatted(stock.getShares(), stock.getSymbol().toUpperCase(), stock.getShare_price());
+            formatted(stock.getShares(), stock.getSymbol(), stock.getShare_price());
         
         mvc.addObject("message", message);
         return mvc;
@@ -126,6 +128,7 @@ public class PortfolioController {
         Stock stock = create(payload);
 
         User user = (User)sess.getAttribute("user");
+        sess.setMaxInactiveInterval(60*60);
 
         try {
             assetsSvc.deleteStock(stock, user.getUser_id());
@@ -138,7 +141,7 @@ public class PortfolioController {
         mvc.setViewName("edit");
 
         String message = "%s shares of %s @ $%s has been deleted from your porfolio".
-            formatted(stock.getShares(), stock.getSymbol().toUpperCase(), stock.getShare_price());
+            formatted(stock.getShares(), stock.getSymbol(), stock.getShare_price());
 
         mvc.addObject("message", message);
 
@@ -148,7 +151,7 @@ public class PortfolioController {
     private Stock create(MultiValueMap<String, String> payload) {
         Stock stock = new Stock();
 
-        stock.setSymbol(payload.getFirst("symbol").toUpperCase());
+        stock.setSymbol(payload.getFirst("symbol"));
         String shares = payload.getFirst("shares");
         stock.setShares(Integer.parseInt(shares));
         String share_price = payload.getFirst("share_price");

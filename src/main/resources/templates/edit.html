@@ -6,40 +6,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="/styles.css">
     <title>Edit Porfolio</title>
 </head>
 <body>
     <h1>Edit Portfolio</h1>
 
-    <form action="/home/edit" method="post">
-        <table>
+    <div class="form-group"></div>      
+        <table style="width:25%" class="center">
+        <form action="/home/edit" method="post">
             <tr>
-                <td><h3>Symbol:</h3></td>
-                <td><input type="text" name="symbol" id="" required></td>
+                <td><input type="text" class="form-control form-control-lg" 
+                    name="symbol" id="" placeholder="Symbol" oninput="this.value = this.value.toUpperCase()" required></td>
             </tr>
             <tr>
-                <td><h3>Shares:</h3></td>
-                <td><input type="number" name="shares" id="" required></td>
+                <td><input type="number" class="form-control form-control-lg" 
+                    name="shares" id="" placeholder="Shares" required></td>
             </tr>
             <tr>
-                <td><h3>Share Price:</h3></td>
-                <td><input type="number" step="0.01" name="share_price" id="" required></td>                
+                <td><input type="number" step="0.01" class="form-control form-control-lg" 
+                    name="share_price" id="" placeholder="Share price" required></td>                
             </tr>
-                <td><h3>Date Traded:</h3></td>
-                <td><input type="date" name="date_traded" id="" required></td>
             <tr>
-                <td><button type="submit" name="add" value="add">Add</button></td>
-                <td><button type="submit" name="delete" value="delete">Delete</button></td>
+                <td><input type="date" class="form-control form-control-lg" 
+                    name="date_traded" id="" required></td>
             </tr>
-        </table>  
-    </form>
+            <tr>
+                <td>
+                    <br>
+                </td>
+            </tr>
+            <tr>
+                <td><button type="submit" class="btn btn-success w-100" 
+                    name="add" value="add">Add</button></td>
+            </tr>
+            <tr>
+                <td><button type="submit" class="btn btn-danger w-100" 
+                    name="delete" value="delete">Delete</button></td>
+            </tr>
+        </form>
+            <tr>
+                <td>
+                    <br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <form action="/home" method="post">
+                        <button type="submit" class="btn btn-primary w-100" 
+                            name="return" value="return">Return to Portfolio</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>  
+   
+    <div style="text-align: center; padding-top: 10px;">
+        <h4 style="color: rgba(255, 0, 0, 0.7);"><span data-th-text="${error}"></span></h4>
+        <h4 style="color: rgba(0, 128, 0, 0.7)"><span data-th-text="${message}"></span></h4>
+    </div>
 
-    <h2><span data-th-text="${error}"></span></h2>
-    <h2><span data-th-text="${message}"></span></h2>
-    <br><br><br><br><br>
-    <form action="/home" method="post">
-        <button type="submit" name="return" value="return">Return to Portfolio</button>
-    </form>
-    
+        
+
 </body>
 </html>

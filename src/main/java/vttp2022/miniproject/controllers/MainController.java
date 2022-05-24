@@ -47,7 +47,7 @@ public class MainController {
         Optional<User> opt = userSvc.findUserByEmailAndPassword(email, password);
         
         if (opt.isEmpty()) {
-            mvc.addObject("error", "Incorrect email/password!");
+            mvc.addObject("error", "Incorrect email/password");
             mvc.setStatus(HttpStatus.FORBIDDEN);
             mvc.setViewName("index");
             return mvc;

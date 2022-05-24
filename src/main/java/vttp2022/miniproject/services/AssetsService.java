@@ -53,7 +53,7 @@ public class AssetsService {
             JsonObject quote = reader.readObject();
 
             if (quote.isNull("d"))
-                throw new IllegalArgumentException("Error! Symbol not found!");
+                throw new IllegalArgumentException("Symbol not found, unable to add to portfolio");
         
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -67,7 +67,7 @@ public class AssetsService {
             assetsRepo.addStockByUserId(stock, userId);
             Date date_traded = stock.getDate_traded(); 
             if (date_traded.compareTo(currentdate) > 0)
-                throw new IllegalArgumentException("Error! Traded date is beyond current date!");
+                throw new IllegalArgumentException("Traded date is beyond current date, unable to add to portfolio");
             
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -81,7 +81,7 @@ public class AssetsService {
         try {
             boolean count = assetsRepo.deleteStockByUserId(stock, userId);
             if (count == false)
-                throw new IllegalArgumentException("Asset details inaccurate, unable to delete from portfolio!"); 
+                throw new IllegalArgumentException("Asset details are inaccurate, unable to delete from portfolio"); 
             
         } catch (Exception ex) {
             ex.printStackTrace();
