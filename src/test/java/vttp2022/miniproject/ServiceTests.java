@@ -32,13 +32,13 @@ class ServiceTests {
 	private AssetsService assetsSvc;
 
 	@Test
-	void shouldFindGaryOh() {
+	void shouldFindFred() {
 		Optional<User> opt = userSvc.findUserByEmailAndPassword("fred@gmail.com", "12345678");
 		assertTrue(opt.isPresent());
 	}
 
 	@Test
-	void shouldNotFindFred() {
+	void shouldNotFindGary() {
 		Optional<User> opt = userSvc.findUserByEmailAndPassword("gary@gmail.com", "82374837");
 		assertTrue(opt.isEmpty());
 	}
