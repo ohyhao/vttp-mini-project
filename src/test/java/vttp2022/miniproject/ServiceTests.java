@@ -33,13 +33,13 @@ class ServiceTests {
 
 	@Test
 	void shouldFindGaryOh() {
-		Optional<User> opt = userSvc.findUserByEmailAndPassword("garyoh@gmail.com", "12345678");
+		Optional<User> opt = userSvc.findUserByEmailAndPassword("fred@gmail.com", "12345678");
 		assertTrue(opt.isPresent());
 	}
 
 	@Test
 	void shouldNotFindFred() {
-		Optional<User> opt = userSvc.findUserByEmailAndPassword("fred@gmail.com", "82374837");
+		Optional<User> opt = userSvc.findUserByEmailAndPassword("gary@gmail.com", "82374837");
 		assertTrue(opt.isEmpty());
 	}
 
@@ -108,7 +108,7 @@ class ServiceTests {
 	@Test
 	void shouldNotBeAbleToAddUser() {
 		assertThrows(IllegalArgumentException.class,
-			() -> userSvc.addNewUser("garyoh@gmail.com", "garyoh", "Gary Oh"));
+			() -> userSvc.addNewUser("fred@gmail.com", "fred", "Fred"));
 	}
 
 }

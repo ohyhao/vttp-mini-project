@@ -85,9 +85,9 @@ public class ControllerTests {
     void shouldNotCreateUser() throws Exception {
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("email", "oyh@gmail.com");
-        params.add("password", "oyh");
-        params.add("name", "Yong Hao");
+        params.add("email", "fred@gmail.com");
+        params.add("password", "fred");
+        params.add("name", "Fred");
         
         RequestBuilder req = MockMvcRequestBuilders
             .post("/")
@@ -121,12 +121,10 @@ public class ControllerTests {
         Assertions.assertEquals(201, status);
     }
 
-    
-
     @Test 
     void shouldNotShowHomePage() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("email", "garyoh@gmail.com");
+        params.add("email", "fred@gmail.com");
         params.add("password", "12345679");
 
         RequestBuilder req = MockMvcRequestBuilders
@@ -143,7 +141,7 @@ public class ControllerTests {
     @Test 
     void shouldShowHomePage() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("email", "garyoh@gmail.com");
+        params.add("email", "fred@gmail.com");
         params.add("password", "12345678");
 
         RequestBuilder req = MockMvcRequestBuilders
@@ -189,7 +187,7 @@ public class ControllerTests {
         params.add("share_price", "199.9");
         params.add("date_traded", "2022-05-20");
 
-        Optional<User> opt = userSvc.findUserByEmailAndPassword("garyoh@gmail.com", "12345678");
+        Optional<User> opt = userSvc.findUserByEmailAndPassword("fred@gmail.com", "12345678");
         User user = opt.get();
 
         HashMap<String, Object> sessionAttr = new HashMap<String, Object>();
@@ -198,7 +196,7 @@ public class ControllerTests {
         RequestBuilder req = MockMvcRequestBuilders
             .post("/home/edit")
             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .sessionAttrs(sessionAttr).param("email", "garyoh@gmail.com")
+            .sessionAttrs(sessionAttr).param("email", "fred@gmail.com")
             .param("add", "add")
             .params(params);
         
@@ -213,7 +211,7 @@ public class ControllerTests {
         params.add("share_price", "199.9");
         params.add("date_traded", "2022-05-30");
 
-        Optional<User> opt = userSvc.findUserByEmailAndPassword("garyoh@gmail.com", "12345678");
+        Optional<User> opt = userSvc.findUserByEmailAndPassword("fred@gmail.com", "12345678");
         User user = opt.get();
 
         HashMap<String, Object> sessionAttr = new HashMap<String, Object>();
@@ -222,7 +220,7 @@ public class ControllerTests {
         RequestBuilder req = MockMvcRequestBuilders
             .post("/home/edit")
             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .sessionAttrs(sessionAttr).param("email", "garyoh@gmail.com")
+            .sessionAttrs(sessionAttr).param("email", "fred@gmail.com")
             .param("delete", "delete")
             .params(params);
 
@@ -236,7 +234,7 @@ public class ControllerTests {
     @Test 
     void shouldReturnToHomePage() throws Exception {
 
-        Optional<User> opt = userSvc.findUserByEmailAndPassword("garyoh@gmail.com", "12345678");
+        Optional<User> opt = userSvc.findUserByEmailAndPassword("fred@gmail.com", "12345678");
         User user = opt.get();
 
         HashMap<String, Object> sessionAttr = new HashMap<String, Object>();
@@ -245,7 +243,7 @@ public class ControllerTests {
         RequestBuilder req = MockMvcRequestBuilders
             .post("/home")
             .param("return", "return")
-            .sessionAttrs(sessionAttr).param("email", "garyoh@gmail.com");
+            .sessionAttrs(sessionAttr).param("email", "fred@gmail.com");
         
         MvcResult result = mvc.perform(req).andReturn();
 
@@ -288,5 +286,4 @@ public class ControllerTests {
         }
         return stock;
     }
-
 }
